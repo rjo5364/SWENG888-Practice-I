@@ -25,7 +25,7 @@
         android:id="@+id/firstNameEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/lName"
+        android:hint="@string/fName"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="44dp"
