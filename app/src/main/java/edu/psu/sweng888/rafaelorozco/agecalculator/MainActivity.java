@@ -3,7 +3,6 @@ package edu.psu.sweng888.rafaelorozco.agecalculator;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     // Declaring UI Elements
     private EditText firstNameET;
     private EditText lastNameET;
-    private DatePicker datePicker;
+    private EditText DateEditText;
     private Button calcAgeBtn;
 
     //adjusting window padding due to overlapping issues with calendar integration
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         //iniatilzing the UI elements and setting them for each view
         firstNameET = findViewById(R.id.firstNameEditText);
         lastNameET = findViewById(R.id.lastNameEditText);
-        datePicker = findViewById(R.id.datePicker);
+        DateEditText = findViewById(R.id.DateEditText);
         calcAgeBtn = findViewById(R.id.calculateAgeButton);
 
         //Calculate Age Button Listener, implementation ref https://developer.android.com/reference/android/view/View.OnClickListener
@@ -71,6 +71,26 @@ public class MainActivity extends AppCompatActivity {
             Toast lNameNullToast = Toast.makeText(this,nullAlert,toastDuration);
             lNameNullToast.show();
         }
+
+        String DOB = DateEditText.getText().toString();
+        if (DOB == "") {
+            String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Blank or incomplete dates are not a valid input.";
+            Toast DOBNullToast = Toast.makeText(this, nullAlert, toastDuration);
+            DOBNullToast.show();
+        }else if (DOB.length() != 10){
+            String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Incomplete dates are not a valid input.";
+            Toast DOBShortToast = Toast.makeText(this, nullAlert, toastDuration);
+            DOBShortToast.show();
+        }
+
+        //if input is good proceed to parse with simpledateformat.parse
+
+        //new SimpleDateFormat();
+
+        // Getting the current date
+        Calendar today = Calendar.getInstance();
+
+    }
 
       //todos pending:
         //button listener for agecalculator
