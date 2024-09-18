@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText lastNameET;
     private EditText DateEditText;
     private Button calcAgeBtn;
+    Boolean Warned = false;
 
     //adjusting window padding due to overlapping issues with calendar integration
     protected void onCreate(Bundle savedInstancesState) {
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 calculateAgeMethod();
+                //Bool to avoid multiple warnings
+               Warned = false;
             }
         });
     }
@@ -76,14 +79,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String DOB = DateEditText.getText().toString();
-        if (DOB == "") {
+        if (Warned == false & DOB == "") {
             String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Blank or incomplete dates are not a valid input.";
             Toast DOBNullToast = Toast.makeText(this, nullAlert, toastDuration);
             DOBNullToast.show();
-        }else if (DOB.length() != 10){
+            Warned  = true;
+        }else if (Warned == false & DOB.length() != 10){
             String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Incomplete dates are not a valid input.";
             Toast DOBShortToast = Toast.makeText(this, nullAlert, toastDuration);
             DOBShortToast.show();
+            Warned  = true;
         }
 
        SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
@@ -95,14 +100,23 @@ public class MainActivity extends AppCompatActivity {
             String invalidAfterDateAlert = "You entered a date in the future. Please enter a date in the past.";
             Toast DOBAfterToast = Toast.makeText(this, invalidAfterDateAlert, toastDuration);
             DOBAfterToast.show();
+        }else if(Warned != true & birthDateFormatted.before(new Date())){
+        int resultAge = calculatedAge(birthDateFormatted);
+
+        //Final Toast message if all checks go through
+        String resultMessage = fName + " " + lName + " you are " + resultAge + " years old.";
+        Toast resultMessageToast = Toast.makeText(this, resultMessage,toastDuration);
+        resultMessageToast.show();
         }
+        }catch (ParseException e){
+            //When an invalid date is entered devDocs: https://stackoverflow.com/questions/22248311/how-to-handle-try-catch-exception-android
+            //https://stackoverflow.com/questions/16116652/parseexception-java
+                String anyInvalidDateAlert = "Invalid date format. Please enter date as MM/DD/YYYY.";
+                Toast anyInvalidDateToast = Toast.makeText(this, anyInvalidDateAlert, toastDuration);
+                anyInvalidDateToast.show();
+                Warned = true;
+
         }
-
-        //if input is good proceed to parse with simpledateformat.parse
-
-        //new SimpleDateFormat();
-
-
 
     }
 
