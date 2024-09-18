@@ -14,6 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.text.ParseException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -83,14 +86,44 @@ public class MainActivity extends AppCompatActivity {
             DOBShortToast.show();
         }
 
+       SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+
+        try{
+            Date birthDateFormatted = formattedDate.parse(DOB);
+
+        if (birthDateFormatted.after(new Date())){
+            String invalidAfterDateAlert = "You entered a date in the future. Please enter a date in the past.";
+            Toast DOBAfterToast = Toast.makeText(this, invalidAfterDateAlert, toastDuration);
+            DOBAfterToast.show();
+        }
+        }
+
         //if input is good proceed to parse with simpledateformat.parse
 
         //new SimpleDateFormat();
 
+
+
+    }
+
+    private int calculatedAge(Date DOB){
         // Getting the current date
         Calendar today = Calendar.getInstance();
 
+        //calendarizing DOB
+        Calendar birthDayCalendar = Calendar.getInstance();
+        birthDayCalendar.setTime(DOB);
+
+        //calculating date dif
+        int age = today.get(Calendar.YEAR) - birthDayCalendar.get(Calendar.YEAR);
+
+        //Checking to see if user BDAY has occured in current year
+        if (today.before(birthDayCalendar)){
+            age -= 1;
+        }
+        return age;
     }
+
 
       //todos pending:
         //button listener for agecalculator
