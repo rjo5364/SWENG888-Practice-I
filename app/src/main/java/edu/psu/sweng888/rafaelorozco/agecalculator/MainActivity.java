@@ -23,5 +23,23 @@ public class MainActivity extends AppCompatActivity {
     private DatePicker datePicker;
     private Button calcAgeBtn;
 
+    //adjusting window padding due to overlapping issues with calendar integration
+    protected void onCreate(Bundle savedInstancesState){
+        super.onCreate(savedInstancesState);
+        EdgeToEdge.enable(this);
+        //setting the user interface for this particluar activity
+        setContentView(R.layout.activity_main);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->{ Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+    });
+
+    //iniatilzing the UI elements and setting them for each view
+      firstNameET = findViewById(R.id.firstNameEditText);
+      lastNameET = findViewById(R.id.lastNameEditText);
+      datePicker = findViewById(R.id.datePicker);
+      calcAgeBtn = findViewById(R.id.calculateAgeButton);
+
 }
 
