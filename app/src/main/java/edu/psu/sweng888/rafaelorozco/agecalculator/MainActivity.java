@@ -52,7 +52,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //validating user input and calculating age
+    public void calculateAgeMethod(){
 
+        //getting fname and lname inputs
+        fName = firstNameET.getText().toString();
+        lname = lastNameET.getText().toString();
+
+    }
       //todos pending:
         //button listener for agecalculator
        //input validation for fname and lname
