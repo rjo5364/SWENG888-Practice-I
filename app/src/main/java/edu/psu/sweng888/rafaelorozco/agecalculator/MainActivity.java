@@ -41,5 +41,13 @@ public class MainActivity extends AppCompatActivity {
       datePicker = findViewById(R.id.datePicker);
       calcAgeBtn = findViewById(R.id.calculateAgeButton);
 
+
+      //todos pending:
+        //button listener for agecalculator
+       //input validation for fname and lname
+       //input validation for date? maybe depends on datapicker behaviour
+       //calculate age logic
+        //toast for invalid inputs
+        //toast for resultant
 }
 
