@@ -71,11 +71,13 @@ public class MainActivity extends AppCompatActivity {
             String nullAlert = "Please enter a first name, blank is not a valid input";
             Toast fNameNullToast = Toast.makeText(this,nullAlert,toastDuration);
             fNameNullToast.show();
+            Warned  = true;
         }else if (lName.isEmpty()){
 
             String nullAlert = "Please enter a last name, blank is not a valid input";
             Toast lNameNullToast = Toast.makeText(this,nullAlert,toastDuration);
             lNameNullToast.show();
+            Warned  = true;
         }
 
         String DOB = DateEditText.getText().toString().trim();
@@ -107,48 +109,46 @@ public class MainActivity extends AppCompatActivity {
         }else if(Warned != true & !fName.isEmpty() & !lName.isEmpty() ){
         //Final Toast message if all checks go through
         int resultAge = calculatedAge(birthDateFormatted);
-        String resultMessage = fName + " " + lName + " ,you are " + resultAge + " years old.";
+        String resultMessage = fName + " " + lName + ", you are " + resultAge + " years old.";
         Toast resultMessageToast = Toast.makeText(this, resultMessage,toastDuration);
         resultMessageToast.show();
         }
         }catch (ParseException e){
             //When an invalid date is entered devDocs: https://stackoverflow.com/questions/22248311/how-to-handle-try-catch-exception-android
             //https://stackoverflow.com/questions/16116652/parseexception-java
+            if (Warned  == false) {
                 String anyInvalidDateAlert = "Invalid date format. Please enter date as MM/DD/YYYY.";
                 Toast anyInvalidDateToast = Toast.makeText(this, anyInvalidDateAlert, toastDuration);
                 anyInvalidDateToast.show();
                 Warned = true;
-            Toast warnedFlagActive = Toast.makeText(this,"Warned is now true",toastDuration);
+            }
+                //Toast warnedFlagActive = Toast.makeText(this,"Warned is now true",toastDuration);
 
         }
 
     }
 
-    private int calculatedAge(Date DOB){
+    private int calculatedAge(Date DOB) {
         // Getting the current date
         Calendar today = Calendar.getInstance();
 
-        //calendarizing DOB
-        Calendar birthDayCalendar = Calendar.getInstance();
-        birthDayCalendar.setTime(DOB);
+        // Calendarizing DOB
+        Calendar calendarizedDOB = Calendar.getInstance();
+        calendarizedDOB.setTime(DOB);
 
-        //calculating date dif
-        int age = today.get(Calendar.YEAR) - birthDayCalendar.get(Calendar.YEAR);
+        // Calculate initial age
+        int age = today.get(Calendar.YEAR) - calendarizedDOB.get(Calendar.YEAR);
 
-        //Checking to see if user BDAY has occured in current year
-        if (today.before(birthDayCalendar)){
+        // Adjust birth date to the current year
+        calendarizedDOB.set(Calendar.YEAR, today.get(Calendar.YEAR));
+
+        // If today's date is before the birthday this year, subtract one from age
+        if (today.before(calendarizedDOB)) {
             age -= 1;
         }
+
         return age;
     }
 
-
-      //todos pending:
-        //button listener for agecalculator
-       //input validation for fname and lname
-       //input validation for date? maybe depends on datapicker behaviour
-       //calculate age logic
-        //toast for invalid inputs
-        //toast for resultant
 }
 
