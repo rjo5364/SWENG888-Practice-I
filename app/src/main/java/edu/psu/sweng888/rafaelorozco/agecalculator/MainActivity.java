@@ -56,10 +56,22 @@ public class MainActivity extends AppCompatActivity {
     public void calculateAgeMethod(){
 
         //getting fname and lname inputs
-        fName = firstNameET.getText().toString();
-        lname = lastNameET.getText().toString();
+        String fName = firstNameET.getText().toString();
+        String lName = lastNameET.getText().toString();
 
-    }
+        //string validation and toast: https://developer.android.com/guide/topics/ui/notifiers/toasts#show-toast
+        int toastDuration = Toast.LENGTH_SHORT;
+        if (fName == ""){
+            String nullAlert = "Please enter a first name, blank is not a valid input";
+            Toast fNameNullToast = Toast.makeText(this,nullAlert,toastDuration);
+            fNameNullToast.show();
+        }else if (lName == ""){
+
+            String nullAlert = "Please enter a last name, blank is not a valid input";
+            Toast lNameNullToast = Toast.makeText(this,nullAlert,toastDuration);
+            lNameNullToast.show();
+        }
+
       //todos pending:
         //button listener for agecalculator
        //input validation for fname and lname
