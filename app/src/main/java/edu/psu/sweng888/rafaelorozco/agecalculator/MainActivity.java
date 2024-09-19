@@ -86,15 +86,11 @@ public class MainActivity extends AppCompatActivity {
             Toast DOBNullToast = Toast.makeText(this, nullAlert, toastDuration);
             DOBNullToast.show();
             Warned  = true;
-//            Toast warnedFlagActive = Toast.makeText(this,"Warned is now true",toastDuration);
-//            warnedFlagActive.show();
         }else if (Warned == false & DOB.length() != 10){
             String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Incomplete dates are not a valid input.";
             Toast DOBShortToast = Toast.makeText(this, nullAlert, toastDuration);
             DOBShortToast.show();
             Warned  = true;
-//            Toast warnedFlagActive = Toast.makeText(this,"Warned is now true",toastDuration);
-//            warnedFlagActive.show();
         }
 
        SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
@@ -102,11 +98,22 @@ public class MainActivity extends AppCompatActivity {
         try{
             Date birthDateFormatted = formattedDate.parse(DOB);
 
-        if (birthDateFormatted.after(new Date())){
+            //converting first two char in range of DOB to int and flagging for testing
+            String DOBStringMonth = DOB.substring(0,2);
+//            Toast bdayMonthToast = Toast.makeText(this, DOBStringMonth, toastDuration);
+//            bdayMonthToast.show();
+
+        //checking to see if month is valid since calcs are only checking dates and years
+        if (Integer.parseInt(DOBStringMonth) < 1 || Integer.parseInt(DOBStringMonth) > 12){
+            String invalidMonthAlert = "You entered a month that doesn't exist. Please enter your birthdate in MM/dd/yyyy format.";
+            Toast invalidMonthToast = Toast.makeText(this, invalidMonthAlert, toastDuration);
+            invalidMonthToast.show();
+            Warned  = true;
+        } else if (birthDateFormatted.after(new Date())){
             String invalidAfterDateAlert = "You entered a date in the future. Please enter a date in the past.";
             Toast DOBAfterToast = Toast.makeText(this, invalidAfterDateAlert, toastDuration);
             DOBAfterToast.show();
-        }else if(Warned != true & !fName.isEmpty() & !lName.isEmpty() ){
+        } else if(Warned != true & !fName.isEmpty() & !lName.isEmpty() ){
         //Final Toast message if all checks go through
         int resultAge = calculatedAge(birthDateFormatted);
         String resultMessage = fName + " " + lName + ", you are " + resultAge + " years old.";
@@ -122,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 anyInvalidDateToast.show();
                 Warned = true;
             }
-                //Toast warnedFlagActive = Toast.makeText(this,"Warned is now true",toastDuration);
+
 
         }
 
@@ -146,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
         if (today.before(calendarizedDOB)) {
             age -= 1;
         }
-
         return age;
     }
 
