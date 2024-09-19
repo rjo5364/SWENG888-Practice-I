@@ -60,8 +60,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
-
     <!-- Calculate Age Button -->
     <Button
         android:id="@+id/calculateAgeButton"
@@ -73,5 +71,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/PennStateBlue"
-        android:textSize="18dp"/>
+        android:textSize="18sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
