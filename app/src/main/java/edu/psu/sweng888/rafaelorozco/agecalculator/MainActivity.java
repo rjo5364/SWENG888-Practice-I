@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         //string validation and toast: https://developer.android.com/guide/topics/ui/notifiers/toasts#show-toast
         int toastDuration = Toast.LENGTH_SHORT;
+        //null chekcing for name values
         if (fName.isEmpty()){
             String nullAlert = "Please enter a first name, blank is not a valid input";
             Toast fNameNullToast = Toast.makeText(this,nullAlert,toastDuration);
@@ -79,62 +80,47 @@ public class MainActivity extends AppCompatActivity {
             lNameNullToast.show();
             Warned  = true;
         }
-
+//null checking for values
         String DOB = DateEditText.getText().toString().trim();
         if (Warned == false & DOB.isEmpty()) {
             String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Blank or incomplete dates are not a valid input.";
             Toast DOBNullToast = Toast.makeText(this, nullAlert, toastDuration);
             DOBNullToast.show();
             Warned  = true;
-        }else if (Warned == false & DOB.length() != 10){
-            String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Incomplete dates are not a valid input.";
-            Toast DOBShortToast = Toast.makeText(this, nullAlert, toastDuration);
-            DOBShortToast.show();
-            Warned  = true;
         }
 
-       SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        // Define the expected date format
+        SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        formattedDate.setLenient(false); // Strict date parsing
 
-        try{
-            Date birthDateFormatted = formattedDate.parse(DOB);
-
-            //converting first two char in range of DOB to int and flagging for testing
-            String DOBStringMonth = DOB.substring(0,2);
-//            Toast bdayMonthToast = Toast.makeText(this, DOBStringMonth, toastDuration);
-//            bdayMonthToast.show();
-
-        //checking to see if month is valid since calcs are only checking dates and years
-        if (Integer.parseInt(DOBStringMonth) < 1 || Integer.parseInt(DOBStringMonth) > 12){
-            String invalidMonthAlert = "You entered a month that doesn't exist. Please enter your birthdate in MM/dd/yyyy format.";
-            Toast invalidMonthToast = Toast.makeText(this, invalidMonthAlert, toastDuration);
-            invalidMonthToast.show();
-            Warned  = true;
-        } else if (birthDateFormatted.after(new Date())){
-            String invalidAfterDateAlert = "You entered a date in the future. Please enter a date in the past.";
-            Toast DOBAfterToast = Toast.makeText(this, invalidAfterDateAlert, toastDuration);
-            DOBAfterToast.show();
-        } else if(Warned != true & !fName.isEmpty() & !lName.isEmpty() ){
-        //Final Toast message if all checks go through
-        int resultAge = calculatedAge(birthDateFormatted);
-        String resultMessage = fName + " " + lName + ", you are " + resultAge + " years old.";
-        Toast resultMessageToast = Toast.makeText(this, resultMessage,toastDuration);
-        resultMessageToast.show();
-        }
-        }catch (ParseException e){
-            //When an invalid date is entered devDocs: https://stackoverflow.com/questions/22248311/how-to-handle-try-catch-exception-android
-            //https://stackoverflow.com/questions/16116652/parseexception-java
-            if (Warned  == false) {
-                String anyInvalidDateAlert = "Invalid date format. Please enter date as MM/DD/YYYY.";
-                Toast anyInvalidDateToast = Toast.makeText(this, anyInvalidDateAlert, toastDuration);
-                anyInvalidDateToast.show();
-                Warned = true;
-            }
-
-
+        Date birthDateFormatted;
+        try {
+            // Parse the date
+            birthDateFormatted = formattedDate.parse(DOB);
+        } catch (ParseException e) {
+            String invalidDateAlert = "Invalid date format. Please enter date as MM/DD/YYYY.";
+            Toast.makeText(this, invalidDateAlert, toastDuration).show();
+            return; // Exit the method after showing the error
         }
 
+                //checking to see if month is valid since calcs are only checking dates and years
+                if (Warned == false & DOB.length() != 10) {
+                    String nullAlert = "Please enter your birthdate in MM/dd/yyyy format. Incomplete dates are not a valid input.";
+                    Toast DOBShortToast = Toast.makeText(this, nullAlert, toastDuration);
+                    DOBShortToast.show();
+                    Warned = true;
+                }  else if (birthDateFormatted.after(new Date())) {
+                    String invalidAfterDateAlert = "You entered a date in the future. Please enter a date in the past.";
+                    Toast DOBAfterToast = Toast.makeText(this, invalidAfterDateAlert, toastDuration);
+                    DOBAfterToast.show();
+                } else if (Warned != true & !fName.isEmpty() & !lName.isEmpty()) {
+                    //Final Toast message if all checks go through
+                    int resultAge = calculatedAge(birthDateFormatted);
+                    String resultMessage = fName + " " + lName + ", you are " + resultAge + " years old.";
+                    Toast resultMessageToast = Toast.makeText(this, resultMessage, toastDuration);
+                    resultMessageToast.show();
+                }
     }
-
     private int calculatedAge(Date DOB) {
         // Getting the current date
         Calendar today = Calendar.getInstance();
@@ -155,6 +141,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return age;
     }
-
 }
-
