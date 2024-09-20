@@ -29,13 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
     //adjusting window padding due to overlapping issues with calendar integration
     protected void onCreate(Bundle savedInstancesState) {
+        //calling onCreate superclass to hand defaults
         super.onCreate(savedInstancesState);
         EdgeToEdge.enable(this);
-        //setting the user interface for this particluar activity
+        //setting the user content view for this particluar activity
         setContentView(R.layout.activity_main);
-
+        //using windowlistener to adjust padding on view based on users system
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            //getting the insets from nav and status bars
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            //applying revised padding to avoid overlapping on nav and staus bars
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
